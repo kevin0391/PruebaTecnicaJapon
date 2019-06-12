@@ -1,0 +1,6 @@
+C:\Users\caralex\source\repos\PruebaTecnica\Componete\bin\Debug\Componete.dll
+C:\Users\caralex\source\repos\PruebaTecnica\Componete\bin\Debug\Componete.pdb
+C:\Users\caralex\source\repos\PruebaTecnica\Componete\obj\Debug\Componete.csprojAssemblyReference.cache
+C:\Users\caralex\source\repos\PruebaTecnica\Componete\obj\Debug\Componete.csproj.CoreCompileInputs.cache
+C:\Users\caralex\source\repos\PruebaTecnica\Componete\obj\Debug\Componete.dll
+C:\Users\caralex\source\repos\PruebaTecnica\Componete\obj\Debug\Componete.pdb
