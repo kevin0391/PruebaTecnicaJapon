@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DB_PruebaTecnica" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=SERVIDOR;Initial Catalog=DB_PruebaTecnica;User ID=sa" SettingsObjectName="Datos.Properties.Settings" SettingsPropertyName="DB_PruebaTecnicaConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.TablaCambioContraseña" Member="TablaCambioContraseñas">
+    <Type Name="TablaCambioContraseña">
+      <Column Name="Token" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="IdUsuario" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Utiliazado" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FechaVencimiento" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="TablaUsuario_TablaCambioContraseña" Member="TablaUsuario" ThisKey="IdUsuario" OtherKey="IdUsuario" Type="TablaUsuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TablaUsuario" Member="TablaUsuarios">
+    <Type Name="TablaUsuario">
+      <Column Name="IdUsuario" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="Contraseña" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaNacimiento" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="TablaUsuario_TablaCambioContraseña" Member="TablaCambioContraseñas" ThisKey="IdUsuario" OtherKey="IdUsuario" Type="TablaCambioContraseña" />
+      <Association Name="TablaUsuario_TablaEmpleado" Member="TablaEmpleados" ThisKey="IdUsuario" OtherKey="IdUsuarioCreacion" Type="TablaEmpleado" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TablaEmpleado" Member="TablaEmpleados">
+    <Type Name="TablaEmpleado">
+      <Column Name="IdEmpleado" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DPI" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="Hijo" Type="System.Decimal" DbType="Decimal(2,0) NOT NULL" CanBeNull="false" />
+      <Column Name="SalarioBase" Type="System.Decimal" DbType="Decimal(7,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="IdUsuarioCreacion" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="TablaUsuario_TablaEmpleado" Member="TablaUsuario" ThisKey="IdUsuarioCreacion" OtherKey="IdUsuario" Type="TablaUsuario" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
