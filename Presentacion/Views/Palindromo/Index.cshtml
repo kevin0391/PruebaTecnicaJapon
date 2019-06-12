@@ -1,0 +1,45 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="text-center">
+    <h1 class="h4 text-gray-900 mb-4">Palabras Palindromas</h1>
+</div>
+<form class="container">
+    <div class="form-group">
+        <input id="Text" name="Text" class="form-control form-control-user" type="text" placeholder="Ingresar Palabras..." autofocus />
+    </div>
+
+    <button id="Button_Ingresar" type="button" class="btn btn-primary btn-user btn-block">
+        Buscar
+    </button>
+    <hr>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Submit = function () {
+                if ($('#Text').val() === "") {
+                    alert("Debe ingresar un texto");
+                    $('#Text').focus();
+                    return;
+                }
+
+                $('#Button_Ingresar').prop("disabled", true);
+
+                $.post(
+                    '@Url.Action("ProcesarTexto", "Palindromo")',
+                    {
+                        Text: $('#Text').val()
+                    },
+                    function (result) {
+                        alert(result);
+                        $('#Button_Ingresar').prop("disabled", false);
+                    }
+                );
+            };
+
+            $('#Button_Ingresar').click(function () { Submit(); });
+            $(document).keypress(function (e) { if (e.which == 13) Submit(); });
+        });
+    </script>
+}

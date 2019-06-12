@@ -1,0 +1,66 @@
+﻿@{ Layout = "~/Views/Shared/_LayoutAccount.cshtml"; }
+
+<div class="text-center">
+    <h1 class="h4 text-gray-900 mb-4">Ingresar Credenciales</h1>
+</div>
+<form class="user">
+    <div class="form-group">
+        <input id="Email" name="Email" class="form-control form-control-user" type="email" placeholder="Ingresar Correo Electrónico..." autofocus />
+    </div>
+
+    <div class="form-group">
+        <input id="Contraseña" name="Contraseña" class="form-control form-control-user" type="password" placeholder="Ingresar Contraseña..." />
+    </div>
+
+    <button id="Button_Ingresar" type="button" class="btn btn-primary btn-user btn-block">
+        <i class="fa fa-sign-in fa-fw"></i> Ingresar
+    </button>
+    <hr>
+</form>
+<hr>
+<div class="text-center">
+    <a class="small" href="@Url.Action("Forget", "Account")">
+        ¿Se te olvidó tu contraseña?
+    </a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Submit = function () {
+                if ($('#Email').val() === "") {
+                    alert("Debe ingresar su correo electrónico");
+                    $('#Email').focus();
+                    return;
+                }
+
+                if ($('#Contraseña').val() === "") {
+                    alert("Debe ingresar su contraseña");
+                    $('#Contraseña').focus();
+                    return;
+                }
+
+                $('#Button_Ingresar').prop("disabled", true);
+
+                $.post(
+                    '@Url.Action("Login", "Account")',
+                    {
+                        Email: $('#Email').val(),
+                        Contraseña: $('#Contraseña').val()
+                    },
+                    function (result) {
+                        if (result) {
+                            $(location).attr('href', '@Url.Action("Index", "Home")');
+                        } else {
+                            alert("Su correo eletrónico y/o contraseña son incorrectos");
+                            $('#Button_Ingresar').prop("disabled", false);
+                        }
+                    }
+                );
+            };
+
+            $('#Button_Ingresar').click(function () { Submit(); });
+            $(document).keypress(function (e) { if (e.which == 13) Submit(); });
+        });
+    </script>
+}

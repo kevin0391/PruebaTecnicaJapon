@@ -1,0 +1,67 @@
+﻿@{ Layout = "~/Views/Shared/_LayoutAccount.cshtml"; }
+
+<div class="text-center">
+    <h1 class="h4 text-gray-900 mb-2">¿Se te olvidó tu contraseña?</h1>
+    <p class="mb-4">
+        Lo conseguimos, las cosas pasan. Simplemente ingrese su dirección de correo electrónico a continuación y le enviaremos un enlace para restablecer su contraseña.
+    </p>
+</div>
+<form class="user">
+    <div class="form-group">
+        <input type="email" class="form-control form-control-user" id="Email" name="Email" placeholder="Ingresar Correo Electrónico..." autofocus />
+    </div>
+    <div class="form-group">
+        <input type="date" class="form-control form-control-user" id="Date" name="Date" />
+    </div>
+    <button id="Button_Ingresar" type="button" class="btn btn-primary btn-user btn-block">
+        <i class="fa fa-sign-in fa-fw"></i> Enviar Correo
+    </button>
+</form>
+<hr>
+<div class="text-center">
+    <a class="small" href="@Url.Action("Login", "Account")">
+        ¿Ya tienes una cuenta? ¡Iniciar sesión!
+    </a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var Submit = function () {
+                if ($('#Email').val() === "") {
+                    alert("Debe ingresar su correo eletrónico");
+                    $('#Email').focus();
+                    return;
+                }
+
+                if ($('#Date').val() === "") {
+                    alert("Debe ingresar su fecha de nacimiento");
+                    $('#Date').focus();
+                    return;
+                }
+
+                $('#Button_Ingresar').prop("disabled", true);
+
+                $.post(
+                    '@Url.Action("Forget", "Account")',
+                    {
+                        Email: $('#Email').val(),
+                        FechaNacimiento: $('#Date').val()
+                    },
+                    function (result) {
+                        if (result) {
+                            alert("Se a enviado un correo electrónico, para restablecer su contraseña");
+                            $(location).attr('href', '@Url.Action("Login", "Account")');
+                        } else {
+                            alert("Correo electrónico y/o fecha de nacimiento son incorrectos");
+                            $('#Button_Ingresar').prop("disabled", false);
+                        }
+                    }
+                );
+            };
+
+            $('#Button_Ingresar').click(function () { Submit(); });
+            $(document).keypress(function (e) { if (e.which == 13) Submit(); });
+        });
+    </script>
+}

@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+
+<html lang="es-gt">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <meta name="description" content="" />
+    <meta name="author" content="">
+
+    <title>@ViewBag.Titulo - Prueba Técnica</title>
+
+    <link rel="stylesheet" href="~/wwwroot/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/wwwroot/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/wwwroot/sb-admin-2/css/sb-admin-2.css" />
+</head>
+
+<body class="bg-gradient-primary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="row">
+                            <div class="col-lg-4 d-none d-lg-block bg-password-image"></div>
+                            <div class="col-lg-8">
+                                <div class="p-5">
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/wwwroot/jquery/jquery.js"></script>
+    <script src="~/wwwroot/bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="~/wwwroot/sb-admin-2/js/sb-admin-2.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

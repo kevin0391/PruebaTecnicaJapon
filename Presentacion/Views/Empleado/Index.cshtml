@@ -1,0 +1,112 @@
+﻿@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+<!DOCTYPE html>
+
+<div class="text-center">
+    <h1 class="h4 text-gray-900 mb-4">Empleados</h1>
+</div>
+<form class="container">
+    <div class="form-group">
+        <input id="DPI" name="DPI" class="form-control form-control-user" type="number" placeholder="Ingresar DPI..." autofocus />
+    </div>
+
+    <div class="form-group">
+        <input id="Nombre" name="Nombre" class="form-control form-control-user" type="text" placeholder="Ingresar Nombre..." />
+    </div>
+
+    <div class="form-group">
+        <input id="Hijos" name="Hijos" class="form-control form-control-user" type="number" placeholder="Ingresar Cantidad de Hijos..." onKeyUp="Calcular();" />
+    </div>
+
+    <div class="form-group">
+        <input id="SalarioBase" name="SalarioBase" class="form-control form-control-user" type="number" placeholder="Ingresar Salario Base..." onKeyUp="Calcular();" />
+    </div>
+
+    <div class="text-center">
+        <h1 class="h4 text-gray-900 mb-4">Cálculo</h1>
+    </div>
+
+    <p id="IdBonoDecreto"> </p>
+    <p id="IdIGGS"> </p>
+    <p id="IdIRTRA"></p>
+    <p id="IdBonoPaternidad"></p>
+    <p id="IdSalarioTottal"></p>
+    <p id="IdSalarioLiquido"></p>
+
+    <button id="Button_Ingresar" type="button" class="btn btn-primary btn-user btn-block">
+        Guardar
+    </button>
+    <hr>
+</form>
+
+@section Scripts {
+    <script type="text/javascript">
+    function Calcular() {
+            var calcSalarioBase = document.getElementById("SalarioBase").value;
+            var calcCantidadHijos =  document.getElementById("Hijos").value;
+            var calcBonoDecreto = 250.00;
+            var calcIGGS = calcSalarioBase * 4.83 / 100;
+            var calcIRTRA = calcSalarioBase * 1 / 100;
+            var calcBonoParternidad = 133 * calcCantidadHijos;
+            var calcSalarioTotal = parseFloat(calcSalarioBase) + calcBonoParternidad + calcBonoDecreto;
+            var calcSalarioLiquido = calcSalarioTotal - calcIGGS - calcIRTRA;
+
+            document.getElementById("IdBonoDecreto").innerHTML = "Bono Decreto: " + calcBonoDecreto.toFixed(2);
+            document.getElementById("IdIGGS").innerHTML = "IGGS: " + calcIGGS.toFixed(2);
+            document.getElementById("IdIRTRA").innerHTML = "IRTRA: " + calcIRTRA.toFixed(2);
+            document.getElementById("IdBonoPaternidad").innerHTML = "Bono de paternidad: " + calcBonoParternidad.toFixed(2);
+            document.getElementById("IdSalarioTottal").innerHTML = "Bono Total: " + calcSalarioTotal.toFixed(2);
+            document.getElementById("IdSalarioLiquido").innerHTML = "Bono liquido: " + calcSalarioLiquido.toFixed(2);
+        }
+
+        $(document).ready(function () {
+            var Submit = function () {
+                if ($('#DPI').val() === "") {
+                    alert("Debe ingresar un numero de DPI");
+                    $('#DPI').focus();
+                    return;
+                }
+
+                if ($('#Nombre').val() === "") {
+                    alert("Debe ingresar un nombre");
+                    $('#Nombre').focus();
+                    return;
+                }
+
+                if ($('#Hijos').val() === "") {
+                    alert("Debe ingresar una cantidad de hijos");
+                    $('#Hijos').focus();
+                    return;
+                }
+
+                if ($('#SalarioBase').val() === "") {
+                    alert("Debe ingresar un Salario Base");
+                    $('#SalarioBase').focus();
+                    return;
+                }
+
+                $('#Button_Ingresar').prop("disabled", true);
+
+                $.post(
+                    '@Url.Action("IngresoEmpleado", "Empleado")',
+                    {
+                        DPI: $('#DPI').val(),
+                        Nombre: $('#Nombre').val(),
+                        Hijos: $('#Hijos').val(),
+                        SalarioBase: $('#SalarioBase').val()
+                    },
+                    function (result) {
+                        if (result) {
+                            $(location).attr('href', '@Url.Action("Index", "Empleado")');
+                        } else {
+                            alert("No se ingreso el empleado");
+                            $('#Button_Ingresar').prop("disabled", false);
+                        }
+                    }
+                );
+            };
+
+            $('#Button_Ingresar').click(function () { Submit(); });
+            $(document).keypress(function (e) { if (e.which == 13) Submit(); });
+        });
+    </script>
+}

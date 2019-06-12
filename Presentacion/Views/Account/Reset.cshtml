@@ -1,0 +1,78 @@
+﻿@{ Layout = "~/Views/Shared/_LayoutAccount.cshtml"; }
+
+<div class="text-center">
+    <h1 class="h4 text-gray-900 mb-4">Restablecer Credenciales</h1>
+</div>
+<form class="user">
+    <div class="form-group">
+        <input id="Contraseña" name="Contraseña" class="form-control form-control-user" type="password" placeholder="Ingresar Nueva Contraseña..." />
+    </div>
+
+    <div class="form-group">
+        <input id="Confirmar" name="Confirmar" class="form-control form-control-user" type="password" placeholder="Ingresar Confirmación de Contraseña..." />
+    </div>
+
+    <button id="Button_Ingresar" type="button" class="btn btn-primary btn-user btn-block">
+        <i class="fa fa-sign-in fa-fw"></i> Restablecer Contraseña
+    </button>
+    <hr>
+</form>
+<hr>
+<div class="text-center">
+    <a class="small" href="@Url.Action("Forget", "Account")">
+        ¿Se te olvidó tu contraseña?
+    </a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        if ("@ViewBag.MnesajeToken" != "Correcto")
+        {
+            alert("@ViewBag.MnesajeToken");
+            $(location).attr('href', '@Url.Action("Login", "Account")');
+        }
+
+        $(document).ready(function () {
+            var Submit = function () {
+                if ($('#Contraseña').val() === "") {
+                    alert("Debe ingresar una nueva contraseña");
+                    $('#Contraseña').focus();
+                    return;
+                }
+
+                if ($('#Confirmar').val() === "") {
+                    alert("Debe ingresar la confirmación de la contraseña");
+                    $('#Confirmar').focus();
+                    return;
+                }
+
+                if ($('#Confirmar').val() !== $('#Contraseña').val()) {
+                    alert("Las contraseñas no coinciden");
+                    $('#Contraseña').focus();
+                    return;
+                }
+
+                $('#Button_Ingresar').prop("disabled", true);
+
+                $.post(
+                    '@Url.Action("Reset", "Account")',
+                    {
+                        Contraseña: $('#Contraseña').val(),
+                        Token: "@ViewBag.Token"
+                    },
+                    function (result) {
+                        if (result) {
+                            $(location).attr('href', '@Url.Action("Login", "Account")');
+                        } else {
+                            alert("Algo salio mal, inténtelo de nuevo más tarde");
+                            $('#Button_Ingresar').prop("disabled", false);
+                        }
+                    }
+                );
+            };
+
+            $('#Button_Ingresar').click(function () { Submit(); });
+            $(document).keypress(function (e) { if (e.which == 13) Submit(); });
+        });
+    </script>
+}
